@@ -3,8 +3,8 @@ An electron-based controller for KEF wireless speakers. Only tested with KEF LSX
 
 <img src="https://i.imgur.com/6OPbLZ1.jpg" width="500">
 
-## Getting sttarted
-Before you get started, make sure to change the speaker IP address to your speaker's address. You can do so in src/utils/kefControl.ts on line 39.
+## Getting started
+Before you get started, make sure to change the IP address to your speaker's address. You can do so in src/utils/kefControl.ts on line 39.
 
 ```
 yarn
