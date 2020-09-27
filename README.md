@@ -10,12 +10,12 @@ yarn electron:serve
 ```
 
 ## Features & Todos
-[x] Turn on/off
-[x] Input source switching
-[x] Volume slider
-[x] Playback controls
-[ ] Playback controls design
-[ ] Speaker IP settings
-[ ] Include electron-builder
-[ ] App Icon
-[ ] Sound signature controls
+- [x] Turn on/off
+- [x] Input source switching
+- [x] Volume slider
+- [x] Playback controls
+- [ ] Playback controls design
+- [ ] Speaker IP settings
+- [ ] Include electron-builder
+- [ ] App Icon
+- [ ] Sound signature controls
