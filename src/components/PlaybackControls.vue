@@ -1,17 +1,36 @@
 <template>
     <div v-if="showPlaybackControls" class="mt-8">
         <h3 class="text-white text-xl text-center font-semibold">Playback</h3>
-        <div class="mt-3 flex justify-between">
-            <vs-button danger flat active @click="previousTrack">
-                Previous
+        <div class="mt-3 flex justify-center">
+
+            <vs-button
+                icon
+                border
+                @click="previousTrack"
+                class="mx-1"
+            >
+                <i class='bx bx-skip-previous bx-sm' />
             </vs-button>
 
-            <vs-button danger flat active @click="playPause">
-                Play / Pause
+            <vs-button
+                icon
+                success
+                border
+                @click="playPause"
+                class="mx-5 text-lg flex"
+            >
+                <i class='bx bx-play bx-sm' />
+                /
+                <i class='bx bx-pause bx-sm' />
             </vs-button>
 
-            <vs-button danger flat active @click="nextTrack">
-                Next
+            <vs-button
+                icon
+                border
+                @click="previousTrack"
+                class="mx-1"
+            >
+                <i class='bx bx-skip-next bx-sm' />
             </vs-button>
         </div>
     </div>
@@ -42,7 +61,7 @@ export default Vue.extend({
                 this.inputSource === InputSource.WiFi)
                 return true;
 
-            return false;
+            return true;
         }
     },
     methods: {

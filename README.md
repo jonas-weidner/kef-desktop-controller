@@ -16,7 +16,8 @@ yarn electron:serve
 - [x] Input source switching
 - [x] Volume slider
 - [x] Playback controls
-- [ ] Playback controls design
+- [x] Playback controls design
+- [ ] Check for status changes (volume, source ...)
 - [ ] Speaker IP settings
 - [ ] Include electron-builder
 - [ ] App Icon

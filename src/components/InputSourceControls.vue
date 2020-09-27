@@ -18,7 +18,7 @@
 
             <vs-button
                 icon
-                color="danger"
+                success
                 border
                 :active="this.inputSource === 'OFF'"
                 @click="turnOff"
