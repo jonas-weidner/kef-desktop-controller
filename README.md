@@ -1,24 +1,21 @@
-# kef-electron
+# KEF Speaker Controller
+A controller for KEF wireless speakers. Only tested with KEF LSX, but the LS50 should work as well.
 
-## Project setup
-```
-yarn install
-```
+## Getting sttarted
+Before you get started, make sure to change the speaker IP address to your speaker's address. You can do so in src/utils/kefControl.ts on line 39.
 
-### Compiles and hot-reloads for development
 ```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+yarn
+yarn electron:serve
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Features & Todos
+[x] Turn on/off
+[x] Input source switching
+[x] Volume slider
+[x] Playback controls
+[ ] Playback controls design
+[ ] Speaker IP settings
+[ ] Include electron-builder
+[ ] App Icon
+[ ] Sound signature controls

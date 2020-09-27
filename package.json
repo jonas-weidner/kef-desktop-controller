@@ -5,11 +5,20 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
   },
+  "main": "background.js",
   "dependencies": {
+    "boxicons": "^2.0.5",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "promise-socket": "^7.0.0",
+    "vue": "^2.6.11",
+    "vue-slider-component": "^3.2.5",
+    "vuesax": "^4.0.1-alpha.24"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -20,6 +29,8 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "electron": "^9.0.0",
+    "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
@@ -27,6 +38,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "typescript": "~3.9.3",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.4",
+    "vue-cli-plugin-tailwind": "~1.5.0",
     "vue-template-compiler": "^2.6.11"
   }
 }
