@@ -19,6 +19,7 @@ yarn electron:serve
 - [x] Playback controls design
 - [ ] Check for status changes (volume, source ...)
 - [ ] Speaker IP settings
-- [ ] Include electron-builder
+- [x] Include electron-builder
 - [ ] App Icon
 - [ ] Sound signature controls
+- [ ] Transform into menubar application

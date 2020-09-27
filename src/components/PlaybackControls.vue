@@ -61,7 +61,7 @@ export default Vue.extend({
                 this.inputSource === InputSource.WiFi)
                 return true;
 
-            return true;
+            return false;
         }
     },
     methods: {
