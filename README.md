@@ -20,9 +20,10 @@ yarn electron:serve
 - [x] Include electron-builder
 - [x] App Icon
 - [x] Speaker IP settings
-- [ ] Mute
-- [ ] Check for status changes (volume, source ...)
+- [x] Check for status changes (volume, source ...)
+- [ ] Auto-updater
 - [ ] Release first bundled version
+- [ ] Mute button
 - [ ] Sound signature controls (In Progress, subwoofer controls already implemented)
 - [ ] Transform into menubar application
 - [ ] Search for speakers in network

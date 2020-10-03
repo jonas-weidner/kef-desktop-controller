@@ -54,10 +54,13 @@ export default Vue.extend({
         return {
             controller: {} as KefController,
             inputSource: InputSource.Off as InputSource,
-            view: "playback" as "playback"|"dsp"|"settings"
+            view: "playback" as "playback"|"dsp"|"settings",
+            refreshInterval: null! as any
         };
     },
     async  beforeDestroy() {
+        clearInterval(this.refreshInterval);
+        this.refreshInterval = null;
         await this.controller.closeConnection();
     },
     async mounted() {
@@ -65,6 +68,7 @@ export default Vue.extend({
         setTimeout(async () => {
             this.controller = new KefController();
             this.fetchSpeakerData();
+            this.refreshInterval = setInterval(this.fetchSpeakerData, 10000);
         }, 200);
     },
     methods: {
