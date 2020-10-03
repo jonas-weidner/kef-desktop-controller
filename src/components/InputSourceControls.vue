@@ -24,7 +24,16 @@
                 @click="turnOff"
                 class="mx-1"
             >
-                <i class='bx bx-power-off'></i>
+                <i class='bx bx-power-off' />
+            </vs-button>
+
+            <vs-button
+                icon
+                border
+                @click="$emit('show-settings')"
+                class="mx-1"
+            >
+                <i class='bx bx-cog' />
             </vs-button>
         </div>
     </div>

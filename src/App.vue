@@ -1,8 +1,19 @@
 <template>
     <div id="app" class="py-5 mx-10">
-        <input-source-controls :controller="controller" v-model="inputSource" />
-        <volume-controls ref="volume" :controller="controller" />
-        <playback-controls :controller="controller" :inputSource="inputSource" />
+        <div v-show="!showSettings">
+            <input-source-controls
+                :controller="controller"
+                v-model="inputSource"
+                @show-settings="showSettings = true"
+            />
+            <volume-controls ref="volume" :controller="controller" />
+            <playback-controls :controller="controller" :inputSource="inputSource" />
+        </div>
+        <div v-show="showSettings">
+            <navigation-row @hide-settings="showSettings = false" />
+            <sub-low-pass-controls ref="lowPass" :controller="controller"  />
+            <sub-controls ref="sub" :controller="controller"  />
+        </div>
     </div>
 </template>
 
@@ -10,20 +21,32 @@
 import Vue from "vue";
 import { InputSource } from "./enums";
 import VolumeControls from "./components/VolumeControls.vue";
+import SubControls from "./components/DSP/SubControls.vue";
+import NavigationRow from "./components/DSP/NavigationRow.vue";
 import PlaybackControls from "./components/PlaybackControls.vue";
 import InputSourceControls from "./components/InputSourceControls.vue";
+import SubLowPassControls from "@/components/DSP/SubLowPassControls.vue";
 import KefController from "./utils/kefControl";
 
 export default Vue.extend({
     components: {
         VolumeControls,
+        SubControls,
         PlaybackControls,
-        InputSourceControls
+        InputSourceControls,
+        NavigationRow,
+        SubLowPassControls
+    },
+    watch: {
+        showSettings: function() {
+            this.fetchSpeakerData();
+        }
     },
     data() {
         return {
             controller: {} as KefController,
-            inputSource: InputSource.Off as InputSource
+            inputSource: InputSource.Off as InputSource,
+            showSettings: false as boolean
         };
     },
     async  beforeDestroy() {
@@ -33,8 +56,7 @@ export default Vue.extend({
         document.body.setAttribute("vs-theme", "dark");
         setTimeout(async () => {
             this.controller = new KefController();
-            this.inputSource = await this.controller.getSource();
-            (this.$refs.volume as HTMLFormElement).getVolume();
+            this.fetchSpeakerData();
         }, 200);
     },
     methods: {
@@ -44,6 +66,12 @@ export default Vue.extend({
         async turnOff() {
             await this.controller.turnOff();
             this.inputSource = InputSource.Off;
+        },
+        async fetchSpeakerData() {
+            this.inputSource = await this.controller.getSource();
+            await (this.$refs.sub as HTMLFormElement).getSubDb();
+            await (this.$refs.lowPass as HTMLFormElement).getSubHz();
+            (this.$refs.volume as HTMLFormElement).getVolume();
         }
     }
 });
