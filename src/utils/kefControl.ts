@@ -1,11 +1,24 @@
 import { InputSource } from "@/enums";
 import net from "net";
 import PromiseSocket from "promise-socket";
+import Store from "electron-store";
+
+
+const schema = {
+    port: {
+        type: "number",
+        maximum: 100000,
+        minimum: 1,
+        default: 50001
+    },
+    ip: { type: "string" }
+} as any;
 
 export default class KefController {
     private socket: net.Socket = null!;
     private promiseSocket: PromiseSocket<net.Socket> = null!;
     private connected = false;
+    private store: Store = null!;
     private modeMessages = {
         "WIFI": [0x53, 0x30, 0x81, 0x12, 0x82],
         "OPTICAL": [0x53, 0x30, 0x81, 0x1B, 0x00],
@@ -16,6 +29,7 @@ export default class KefController {
 
     constructor() {
         this.createSocket();
+        this.store = new Store({ schema });
     }
 
     private createSocket() {
@@ -33,10 +47,14 @@ export default class KefController {
     }
 
     private async openConnection(): Promise<void> {
-        if (!this.promiseSocket || !this.connected) {
+        const ip: string = this.store.get("ip", null!) as string;
+        if (ip && (!this.promiseSocket || !this.connected)) {
             this.createSocket();
             this.connected = true;
-            await this.promiseSocket.connect(50001, "192.168.1.218");
+            await this.promiseSocket.connect(
+                this.store.get("port", 50001) as number,
+                ip
+            );
         }
     }
 
@@ -59,56 +77,66 @@ export default class KefController {
 
     public async turnOff(): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x53, 0x30, 0x81, 0x9B, 0x0B]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
-        await this.delay(200);
+        if (this.connected) {
+            const msg = Buffer.from([0x53, 0x30, 0x81, 0x9B, 0x0B]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+            await this.delay(200);
+        }
     }
 
     public async getVolume(): Promise<number> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x47, 0x25, 0x80]);
-        await this.promiseSocket.write(msg);
-        const response = await this.promiseSocket.read(5);
-        const bufferArray = Array.prototype.slice.call(response, 0);
-        await this.closeConnection();
-        await this.delay(200);
-        if (bufferArray.length === 5) return bufferArray[3];
+        if (this.connected) {
+            const msg = Buffer.from([0x47, 0x25, 0x80]);
+            await this.promiseSocket.write(msg);
+            const response = await this.promiseSocket.read(5);
+            const bufferArray = Array.prototype.slice.call(response, 0);
+            await this.closeConnection();
+            await this.delay(200);
+            if (bufferArray.length === 5) return bufferArray[3];
+        }
         return -1;
     }
 
     public async getSubDb(): Promise<number> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x47, 0x2D, 0x80]);
-        await this.promiseSocket.write(msg);
-        const response = await this.promiseSocket.read(5);
-        const bufferArray = Array.prototype.slice.call(response, 0);
-        await this.closeConnection();
-        await this.delay(200);
-        if (bufferArray.length === 5) return (bufferArray[3]-128)*1-10;
+        if (this.connected) {
+            const msg = Buffer.from([0x47, 0x2D, 0x80]);
+            await this.promiseSocket.write(msg);
+            const response = await this.promiseSocket.read(5);
+            const bufferArray = Array.prototype.slice.call(response, 0);
+            await this.closeConnection();
+            await this.delay(200);
+            if (bufferArray.length === 5) return (bufferArray[3] - 128) * 1 - 10;
+        }
         return -1;
     }
     public async getSubHz(): Promise<number> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x47, 0x2C, 0x80]);
-        await this.promiseSocket.write(msg);
-        const response = await this.promiseSocket.read(5);
-        const bufferArray = Array.prototype.slice.call(response, 0);
-        await this.closeConnection();
-        await this.delay(200);
-        if (bufferArray.length === 5) return (bufferArray[3]-128)*5+40;
+        if (this.connected) {
+            const msg = Buffer.from([0x47, 0x2C, 0x80]);
+            await this.promiseSocket.write(msg);
+            const response = await this.promiseSocket.read(5);
+            const bufferArray = Array.prototype.slice.call(response, 0);
+            await this.closeConnection();
+            await this.delay(200);
+            if (bufferArray.length === 5) return (bufferArray[3] - 128) * 5 + 40;
+        }
         return -1;
     }
 
     public async getSource(): Promise<InputSource> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x47, 0x30, 0x80]);
-        await this.promiseSocket.write(msg);
-        const response = await this.promiseSocket.read(5);
-        const bufferArray = Array.prototype.slice.call(response, 0);
-        await this.closeConnection();
-        await this.delay(200);
-        if (bufferArray.length === 5) return this.convertMode(bufferArray[3]);
+        if (this.connected) {
+            const msg = Buffer.from([0x47, 0x30, 0x80]);
+            await this.promiseSocket.write(msg);
+            const response = await this.promiseSocket.read(5);
+            const bufferArray = Array.prototype.slice.call(response, 0);
+            await this.closeConnection();
+            await this.delay(200);
+            if (bufferArray.length === 5) return this.convertMode(bufferArray[3]);
+        }
         return InputSource.Off;
     }
 
@@ -128,53 +156,65 @@ export default class KefController {
 
     public async setVolume(volume: number): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x53, 0x25, 0x81, `0x${volume.toString(16)}`, 0x1A]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
+        if (this.connected) {
+            const msg = Buffer.from([0x53, 0x25, 0x81, `0x${volume.toString(16)}`, 0x1A]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+        }
         await this.delay(200);
     }
 
     public async setSubDb(db: number): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const convertedDb = (db + 10)/1 + 128;
-        const msg = Buffer.from([0x53, 0x2D, 0x81, `0x${convertedDb.toString(16)}`, 0x1A]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
+        if (this.connected) {
+            const convertedDb = (db + 10) / 1 + 128;
+            const msg = Buffer.from([0x53, 0x2D, 0x81, `0x${convertedDb.toString(16)}`, 0x1A]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+        }
         await this.delay(200);
     }
 
     public async setSubHz(hz: number): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const convertedHz = (hz - 40) / 5 +128;
-        const msg = Buffer.from([0x53, 0x2C, 0x81, `0x${convertedHz.toString(16)}`, 0x1A]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
-        await this.delay(200);
+        if (this.connected) {
+            const convertedHz = (hz - 40) / 5 + 128;
+            const msg = Buffer.from([0x53, 0x2C, 0x81, `0x${convertedHz.toString(16)}`, 0x1A]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+            await this.delay(200);
+        }
     }
 
 
 
     public async playPause(): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x53, 0x31, 0x81, 0x81]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
-        await this.delay(200);
+        if (this.connected) {
+            const msg = Buffer.from([0x53, 0x31, 0x81, 0x81]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+            await this.delay(200);
+        }
     }
 
     public async nextTrack(): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x53, 0x31, 0x81, 0x82]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
-        await this.delay(200);
+        if (this.connected) {
+            const msg = Buffer.from([0x53, 0x31, 0x81, 0x82]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+            await this.delay(200);
+        }
     }
 
     public async previousTrack(): Promise<void> {
         if (!this.connected) await this.openConnection();
-        const msg = Buffer.from([0x53, 0x31, 0x81, 0x83]);
-        await this.promiseSocket.write(msg);
-        await this.closeConnection();
-        await this.delay(200);
+        if (this.connected) {
+            const msg = Buffer.from([0x53, 0x31, 0x81, 0x83]);
+            await this.promiseSocket.write(msg);
+            await this.closeConnection();
+            await this.delay(200);
+        }
     }
 }

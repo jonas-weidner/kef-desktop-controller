@@ -1,7 +1,7 @@
 <template>
-    <div v-if="showPlaybackControls" class="mt-8">
-        <h3 class="text-white text-xl text-center font-semibold">Playback</h3>
-        <div class="mt-3 flex justify-center">
+    <div v-if="showPlaybackControls" class="mt-5">
+        <h5 class="text-white text-md text-center font-semibold">Playback</h5>
+        <div class="mt-1 flex justify-center">
 
             <vs-button
                 icon
@@ -17,7 +17,7 @@
                 success
                 border
                 @click="playPause"
-                class="mx-5 text-lg flex"
+                class="mx-5 text-md flex"
             >
                 <i class='bx bx-play bx-sm' />
                 /

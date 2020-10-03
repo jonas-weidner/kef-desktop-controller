@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-8">
-        <h3 class="text-white text-xl text-center font-semibold">Volume</h3>
+    <div class="mt-5">
+        <h5 class="text-white text-md text-center font-semibold">Volume</h5>
         <vue-slider
             class="mt-10"
             :max="100"

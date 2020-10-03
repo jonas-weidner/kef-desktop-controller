@@ -3,7 +3,7 @@
         <vs-button
             icon
             border
-            @click="$emit('hide-settings')"
+            @click="$emit('back')"
             class="mx-1"
         >
            <i class='bx bxs-left-arrow-alt' ></i>

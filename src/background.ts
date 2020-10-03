@@ -23,7 +23,7 @@ protocol.registerSchemesAsPrivileged([
 
 function createWindow () { // eslint-disable-line
     win = new BrowserWindow({
-        width: 400,
+        width: 450,
         height: 450,
         resizable: false,
         autoHideMenuBar: true,

@@ -1,6 +1,6 @@
 <template>
     <div class="mt-8">
-        <h4 class="text-white text-xl text-center font-semibold">Subwoofer Low-Pass Frequency</h4>
+        <h5 class="text-white text-md text-center font-semibold">Subwoofer Low-Pass Frequency</h5>
         <vue-slider
             class="mt-10"
             :max="250"

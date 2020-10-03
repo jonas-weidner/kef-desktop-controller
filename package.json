@@ -17,6 +17,7 @@
   "dependencies": {
     "boxicons": "^2.0.5",
     "core-js": "^3.6.5",
+    "electron-store": "^6.0.0",
     "promise-socket": "^7.0.0",
     "vue": "^2.6.11",
     "vue-slider-component": "^3.2.5",

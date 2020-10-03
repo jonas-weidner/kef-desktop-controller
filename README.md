@@ -17,9 +17,12 @@ yarn electron:serve
 - [x] Volume slider
 - [x] Playback controls
 - [x] Playback controls design
-- [ ] Check for status changes (volume, source ...)
-- [ ] Speaker IP settings
 - [x] Include electron-builder
 - [x] App Icon
-- [ ] Sound signature controls
+- [x] Speaker IP settings
+- [ ] Mute
+- [ ] Check for status changes (volume, source ...)
+- [ ] Release first bundled version
+- [ ] Sound signature controls (In Progress, subwoofer controls already implemented)
 - [ ] Transform into menubar application
+- [ ] Search for speakers in network

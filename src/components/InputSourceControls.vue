@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h3 class="text-white text-xl text-center font-semibold">Input Source</h3>
-        <div class="flex justify-center items-center mt-3">
+        <h5 class="text-white text-md text-center font-semibold">Input Source</h5>
+        <div class="flex justify-center items-center mt-1">
             <vs-select
                 class="mx-1"
                 placeholder="Input source"
@@ -30,10 +30,19 @@
             <vs-button
                 icon
                 border
+                @click="$emit('show-dsp')"
+                class="mx-1"
+            >
+                <i class='bx bx-equalizer'></i>
+            </vs-button>
+
+            <vs-button
+                icon
+                border
                 @click="$emit('show-settings')"
                 class="mx-1"
             >
-                <i class='bx bx-cog' />
+                <i class='bx bx-cog'></i>
             </vs-button>
         </div>
     </div>
