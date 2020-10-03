@@ -20,6 +20,6 @@ yarn electron:serve
 - [ ] Check for status changes (volume, source ...)
 - [ ] Speaker IP settings
 - [x] Include electron-builder
-- [ ] App Icon
+- [x] App Icon
 - [ ] Sound signature controls
 - [ ] Transform into menubar application

@@ -1,1 +1,10 @@
-module.exports = { pluginOptions: { electronBuilder: { nodeIntegration: true } } };
+module.exports = {
+    pluginOptions: {
+        electronBuilder: {
+            nodeIntegration: true,
+            builderOptions: {
+                productName: "KEF Controller"
+            }
+        }
+    }
+};
